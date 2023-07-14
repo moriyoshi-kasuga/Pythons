@@ -16,7 +16,7 @@ def evaluate_calculation():
         calculation = str(eval(calculation))
         text_result.delete(1.0, "end")
         text_result.insert(1.0, calculation)
-    except:
+    except Exception:
         clear_field()
         text_result.insert(1.0, "Error")
 
@@ -36,15 +36,15 @@ def clear_field():
 
 root = tk.Tk()
 root.title("電卓")
-root.geometry("300x220")
+root.geometry("300x240")
 
 text_result = tk.Text(root, height=2, width=16, font=("Arial", 24))
 text_result.grid(columnspan=5)
 
 
-def set_button(text: str, command, row: int, column: int):
+def set_button(text: str, command, row: int, column: int, columnspan: int = 1):
     button = tk.Button(root, text=text, command=command, width=5, font=("Arial", 14))
-    button.grid(row=row, column=column)
+    button.grid(row=row, column=column, columnspan=columnspan)
 
 
 set_button("1", lambda: add_to_calculation(1), 3, 1)
@@ -69,5 +69,6 @@ set_button(".", lambda: add_to_calculation("."), 6, 2)
 
 set_button("=", evaluate_calculation, 6, 3)
 set_button("CE", remove_char, 2, 4)
+set_button("CLEAR", clear_field, 7, 1, 4)
 
 root.mainloop()
