@@ -2,8 +2,8 @@ import os
 from datetime import datetime
 
 import pytz
-from flask_login import (LoginManager, UserMixin, login_required, login_user,
-                         logout_user)
+from flask_login import (LoginManager, UserMixin, current_user, login_required,
+                         login_user, logout_user)
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -27,7 +27,7 @@ class Post(db.Model):
     )
 
 
-class User(db.Model, UserMixin):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), nullable=False, unique=True)
     password = db.Column(db.String(12), nullable=False)
@@ -43,23 +43,14 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-@app.errorhandler(404)
-def page_not_found(error):
-    return "This page does not exist", 404
-
-
 @app.route("/", methods=["GET", "POST"])
-@login_required
 def index():
     if request.method == "GET":
-        posts = Post.query.all()
-        # FIX: ここでログインしてない人には redirect("/loign") で
-        # あとは login にsingup のページへの飛ぶまで
-        # if not current_user.is_authenticated:
-        #     return current_app.login_manager.unauthorized()
-        return render_template("index.html", posts=posts)
-    else:
-        return page_not_found(404)
+        if current_user.is_authenticated:
+            posts = Post.query.all()
+            return render_template("index.html", posts=posts)
+        else:
+            return render_template("not_login_index.html")
 
 
 @app.route("/signup", methods=["GET", "POST"])
