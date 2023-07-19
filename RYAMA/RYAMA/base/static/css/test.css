@@ -1,0 +1,83 @@
+.table-tooltip {
+  position: relative;
+}
+
+.table {
+  width: 80%;
+  border-radius: 10px;
+  border-collapse: collapse;
+  background: #616161;
+  color: #fff;
+}
+
+tr {
+  border-bottom: 2px solid #b9b9b9;
+}
+
+thead tr {
+  border-bottom: 2px solid #b9b9b9;
+}
+
+tr,
+td,
+th {
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  font-weight: 900;
+  text-transform: uppercase;
+  background: black;
+}
+
+.tr-tooltip {
+  background-color: #000;
+  zoom: 1;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+  position: absolute;
+  color: #fff;
+  text-align: center;
+  vertical-align: middle;
+}
+
+td {
+  position: relative;
+}
+
+td:hover .tooltip {
+  display: flex;
+}
+
+.tooltip {
+  background: black;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #fff;
+  text-transform: capitalize;
+  left: 50%;
+  top: 35px;
+  position: absolute;
+  z-index: 1030;
+  font-size: 12px;
+  line-height: 1.4;
+  visibility: visible;
+  filter: alpha(opacity=0);
+  display: none;
+  white-space: pre-wrap;
+  width: auto;
+  height: auto;
+}
+
+.tooltip:after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  right: 50%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent #000 transparent transparent;
+  transform: rotate(90deg) translateY(-50%);
+}
