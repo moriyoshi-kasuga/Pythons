@@ -1,20 +1,50 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="ja">
     <head>
-        <title>To DO Items</title>
+        <title>TODO APP</title>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200&display=swap"
-              rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+        {% load static %}
         <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+        {% block head %}
+        {% endblock head %}
     </head>
+    <header>
+        <h1>
+            <a href="/">TODO APP</a>
+        </h1>
+        <nav class="pc-nav">
+            <ul>
+                <li>
+                    <a href="{% url 'about' %}">ABOUT</a>
+                </li>
+                <!-- TODO: ここにどのように使えるかなどをかく -->
+                <li>
+                    <a href="{% url 'service' %}">SERVICE</a>
+                </li>
+                <li>
+                    <a href="{% url 'tasks' %}">TASKS</a>
+                </li>
+                <li>
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'logout' %}">Logout</a>
+                    {% else %}
+                        <a href="{% url 'account' %}">Account</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </nav>
+    </header>
     <body>
-        <div class="container">
-            {% block content %}
-            {% endblock content %}
-        </div>
+        {% block content %}
+        {% endblock content %}
     </body>
+    <footer>
+        <p>
+            Created of&nbsp;
+            <a target="_blank"
+               href="https://github.com/moriyoshi-kasuga/Pythons/tree/main/RYAMA">This Git Repo</a>
+        </p>
+    </footer>
 </html>

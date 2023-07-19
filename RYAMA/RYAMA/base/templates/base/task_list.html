@@ -1,48 +1,43 @@
 {% extends "base/main.html" %}
+{% block head %}
+    {% load static %}
+    <link href="{% static 'css/task_list.css' %}" rel="stylesheet" />
+{% endblock head %}
 {% block content %}
-    <div class="header-bar">
-        <div>
-            <h1>Hello {{ request.user }}</h1>
-            <h3 style="margin:0">
-                You have <i>{{ count }}</i> incomplete task{{ count|pluralize:"s" }}
-            </h3>
-        </div>
-        {% if request.user.is_authenticated %}
-            <a href="{% url 'logout' %}">Logout</a>
-        {% else %}
-            <a href="{% url 'login' %}">Login</a>
-        {% endif %}
-    </div>
-    <div id="search-add-wrapper">
-        <form method="get" style="margin-top: 20px;display: flex;">
-            <input type="text" name="search-area" value="{{ search_input }}" />
-            <input class="button" type="submit" value="Search" />
-        </form>
-        <a id="add-link" href="{% url 'task-create' %}">&#x2b;</a>
-    </div>
-    <div class="task-items-wrapper">
-        {% for task in tasks %}
-            <div class="task-wrapper">
-                <div class="task-title">
-                    {% if task.complete %}
-                        <div class="task-complete-icon">
-                            <a href="{% url 'task-complete' task.id %}" class="Link"></a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Complete</th>
+                <th>Title and Description</th>
+                <th>Average</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+                <tr>
+                    <td>
+                        <form method="post" name="complete">
+                            {% csrf_token %}
+                            <input type="hidden" name="pk" value={{ task.id }}>
+                            <input class="task-{{ task.complete|yesno:',in' }}complete-icon"
+                                   type="submit"
+                                   value="">
+                        </form>
+                    </td>
+                    <td>
+                        {{ task }}
+                        <div class="tooltip">
+                            {% if task.description %}
+                                {% load string_tags %}
+                                {{ task.description|linebreaksbr|newLine }}"
+                            {% else %}
+                                No Description
+                            {% endif %}
                         </div>
-                        <i><s><a href="{% url 'task-update' task.id %}">{{ task }}</a></s></i>
-                    {% else %}
-                        <div class="task-incomplete-icon">
-                            <a href="{% url 'task-complete' task.id %}" class="Link"></a>
-                        </div>
-                        <a href="{% url 'task-update' task.id %}">{{ task }}</a>
-                    {% endif %}
-                </div>
-                <a class="delete-link" href="{% url 'task-delete' task.id %}">&#215</a>
-            </div>
-        {% empty %}
-            <div class="task-title">
-                <div class="task-complete-icon"></div>
-                <b>No Item In List</b>
-            </div>
-        {% endfor %}
-    </div>
+                    </td>
+                    <td>{{ task.create }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock content %}

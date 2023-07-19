@@ -1,0 +1,46 @@
+{% extends "base/main.html" %}
+{% block head %}
+    {% load static %}
+    <link href="{% static 'css/account.css' %}" rel="stylesheet" />
+    <script src="{% static 'js/account.js' %}"></script>
+{% endblock head %}
+{% block content %}
+    <h2>ログイン、新規アカウント作成</h2>
+    <div class="container" id="container">
+        <div class="form-container sign-up-container">
+            <form method="post" name="signUp">
+                {% csrf_token %}
+                <h1>Create Account</h1>
+                <span>ユーザー名とパスワードを入力してください</span>
+                <input type="text" name="name" placeholder="Name" />
+                <input type="password" name="password1" placeholder="Password" />
+                <input type="password" name="password2" placeholder="Password Confirm" />
+                <button type="submit" name="sign" value="up">Sign Up</button>
+            </form>
+        </div>
+        <div class="form-container sign-in-container">
+            <form method="post" name="singIn">
+                {% csrf_token %}
+                <h1>Sign in</h1>
+                <span>ユーザー名とパスワードを入力してください</span>
+                <input type="text" name="name" placeholder="Name" />
+                <input type="password" name="password" placeholder="Password" />
+                <button type="submit" name="sign" value="in">Sign In</button>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Welcome Back!</h1>
+                    <p>アカウントにログインしてください</p>
+                    <button class="ghost" id="signIn">Sign In</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Hello, Friend!</h1>
+                    <p>アカウントを作成して、旅に出ましょう</p>
+                    <button class="ghost" id="signUp">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
