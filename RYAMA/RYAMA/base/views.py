@@ -1,7 +1,6 @@
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic.detail import DetailView
@@ -19,25 +18,33 @@ def get_or_none(model, *args, **kwargs):
         return None
 
 
-def task_complete(request, *args, **kwargs):
-    if request.method == "POST":
-        return redirect("tasks")
-    task_id = kwargs["pk"]
-    task = get_or_none(Task, id=task_id)
-    if task is None:
-        return redirect("tasks")
-    task.complete = not task.complete
-    task.save()
-    return redirect("tasks")
+def page_account(request, *args, **kwargs):
+    if request.method == "GET":
+        return render(request, "base/account.html")
+    sign = request.POST["sign"]
+    if sign == "in":
+        pass
+    elif sign == "up":
+        pass
+    else:
+        pass
+    return render(request, "base/account.html")
 
 
-class CustomLoginView(LoginView):
-    template_name = "base/login.html"
-    fields = "__all__"
-    redirect_authenticated_user = True
+def page_logout(request, *args, **kwargs):
+    return render(request, "base/logout.html")
 
-    def get_success_url(self):
-        return reverse_lazy("tasks")
+
+def page_about(request, *args, **kwargs):
+    return render(request, "base/about.html")
+
+
+def page_service(request, *args, **kwargs):
+    return render(request, "base/service.html")
+
+
+def page_home(request, *args, **kwargs):
+    return render(request, "base/home.html")
 
 
 class RegisterPage(FormView):
@@ -61,6 +68,15 @@ class RegisterPage(FormView):
 class TaskList(LoginRequiredMixin, ListView):
     model = Task
     context_object_name = "tasks"
+    login_url = "account"
+
+    def post(self, request, *args, **kwargs):
+        task_id = request.POST["pk"]
+        task = get_or_none(Task, id=task_id)
+        if task is not None:
+            task.complete = not task.complete
+            task.save()
+        return self.get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
