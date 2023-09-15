@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+    <title>郵便番号API Test</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="style.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="content">
+        <h1>住所検索</h1>
+        <div class="hero">
+            <form method="post">
+                <label for="code">郵便番号</label>
+                <input type="text" name="code" value="" />
+                <button type="submit">住所を検索</button>
+            </form>
+        </div>
+        {% if "error" in result %} {% endif %}
+        <ul>
+            {% for r in result %}
+            <li>{{result[r]}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+
+</html>
